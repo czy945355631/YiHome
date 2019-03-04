@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author: bianj
+    Email: edinsker@163.com
+    Version: 5.9.0
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- FLOOR_CLASSES -->
+<mapper namespace="com.asjy.YiHome.dao.floorClassesMapper">
+    <!-- 结果映射 -->
+    <resultMap id="floorClassesMap" type="com.asjy.YiHome.model.FloorClasses">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="FLOORID" property="floorid" jdbcType="INTEGER" />
+        <result column="CLASSESID" property="classesid" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        ID, FLOORID, CLASSESID
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findFloorClassesAll" resultMap="floorClassesMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM FLOOR_CLASSES
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findFloorClassesByCondition" resultMap="floorClassesMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM FLOOR_CLASSES WHERE 1 = 1
+        <if test="floorid != null">
+            AND FLOORID = #{floorid}
+        </if>
+        <if test="classesid != null">
+            AND CLASSESID = #{classesid}
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findFloorClassesByIds" resultMap="floorClassesMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM FLOOR_CLASSES WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertFloorClasses" parameterType="map">
+        INSERT INTO FLOOR_CLASSES (<include refid="allColumns" />)
+        VALUES (
+            default,
+            #{floorid},
+            #{classesid}
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateFloorClasses" parameterType="map">
+        UPDATE FLOOR_CLASSES
+        <set>
+            <if test="floorid != null">FLOORID = #{floorid},</if>
+            <if test="classesid != null">CLASSESID = #{classesid}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteFloorClassesById" parameterType="string">
+        DELETE FROM FLOOR_CLASSES WHERE ID = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteFloorClassesByIds" parameterType="list">
+        DELETE FROM FLOOR_CLASSES WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author: bianj
+    Email: edinsker@163.com
+    Version: 5.9.0
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- SPEC_VALUE -->
+<mapper namespace="com.asjy.YiHome.dao.SpecValueMapper">
+    <!-- 结果映射 -->
+    <resultMap id="specValueMap" type="com.asjy.YiHome.model.SpecValue">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="DELETESTATUS" property="deletestatus" jdbcType="VARCHAR" />
+        <result column="SPECVNAME" property="specvname" jdbcType="VARCHAR" />
+        <result column="SEQ" property="seq" jdbcType="INTEGER" />
+        <result column="SPECID" property="specid" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        ID, ADDTIME, DELETESTATUS, SPECVNAME, SEQ, SPECID
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findSpecValueAll" resultMap="specValueMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM SPEC_VALUE
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findSpecValueByCondition" resultMap="specValueMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM SPEC_VALUE WHERE 1 = 1
+        <if test="addtime != null">
+            AND ADDTIME = #{addtime}
+        </if>
+        <if test="deletestatus != null">
+            AND DELETESTATUS = #{deletestatus}
+        </if>
+        <if test="specvname != null and specvname != ''">
+            AND SPECVNAME LIKE CONCAT('%',#{specvname},'%')
+        </if>
+        <if test="seq != null">
+            AND SEQ = #{seq}
+        </if>
+        <if test="specid != null">
+            AND SPECID = #{specid}
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findSpecValueByIds" resultMap="specValueMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM SPEC_VALUE WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertSpecValue" parameterType="map">
+        INSERT INTO SPEC_VALUE (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            now(),
+            1,
+            #{specvname},
+            #{seq},
+            #{specid}
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateSpecValue" parameterType="map">
+        UPDATE SPEC_VALUE
+        <set>
+            <if test="addtime != null">ADDTIME = #{addtime},</if>
+            <if test="deletestatus != null">DELETESTATUS = #{deletestatus},</if>
+            <if test="specvname != null">SPECVNAME = #{specvname},</if>
+            <if test="seq != null">SEQ = #{seq},</if>
+            <if test="specid != null">SPECID = #{specid}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    
+    <!--&lt;!&ndash; 根据主键删除数据 &ndash;&gt;-->
+    <!--<delete id="deleteSpecValueById" parameterType="string">-->
+        <!--DELETE FROM SPEC_VALUE WHERE ID = #{id}-->
+    <!--</delete>-->
+    <!-- 根据规格id删除数据 -->
+    <update id="deleteSpecValueBySpecId" parameterType="map">
+        UPDATE SPEC_VALUE
+        <set>
+            DELETESTATUS = 0
+        </set>
+         WHERE SpecId = #{id}
+    </update>
+    <!-- 根据规格id删除数据 -->
+    <update id="deleteSpecValueById" parameterType="map">
+        UPDATE SPEC_VALUE
+        <set>
+            DELETESTATUS = 0
+        </set>
+        WHERE Id = #{id}
+    </update>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteSpecValueByIds" parameterType="list">
+        DELETE FROM SPEC_VALUE WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+<!--根据规格id及货号查询-->
+    <select id="findSpecvBySpecidAndArtno" resultMap="specValueMap" parameterType="list">
+        SELECT
+        spec_value.id,spec_value.addtime, spec_value.deletestatus, spec_value.specvname, spec_value.seq, spec_value.specid
+        FROM   spec_value LEFT JOIN GOODS_SPEC on  goods_spec.specvid =spec_value.id
+        WHERE goods_spec.specid = #{specid} and artno = #{artno}
+    </select>
+
+
+
+
+
+</mapper>

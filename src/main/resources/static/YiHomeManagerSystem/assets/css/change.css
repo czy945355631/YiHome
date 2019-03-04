@@ -1,0 +1,23 @@
+.form-name{
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+}
+.form-control{
+    display: inline-block;
+    width: 70%;
+}
+
+.radio input[type=radio]{
+    margin-left: -10px;
+}
+.checkbox+.checkbox, .radio+.radio{
+    margin-top: 0;
+}
+div.radio{
+    margin-right: 20px;
+}
+div.radio span{
+    margin-left: 3px;
+}
+

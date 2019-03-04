@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author: bianj
+    Email: edinsker@163.com
+    Version: 5.9.0
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- GOODS_CAR -->
+<mapper namespace="com.asjy.YiHome.dao.GoodsCarMapper">
+    <!-- 结果映射 -->
+    <resultMap id="goodsCarMap" type="com.asjy.YiHome.model.GoodsCar">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="USERID" property="userid" jdbcType="BIGINT" />
+        <result column="GOODSID" property="goodsid" jdbcType="INTEGER" />
+        <result column="QUANTITY" property="quantity" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        ID, ADDTIME, USERID, GOODSID, QUANTITY
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findGoodsCarAll" resultMap="goodsCarMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM GOODS_CAR
+    </select>
+    <!-- 根据主键id查询数据 -->
+    <select id="findGoodsCarId" resultMap="goodsCarMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM GOODS_CAR WHERE 1 = 1
+        <if test="id != null">
+            AND ID = #{id}
+        </if>
+    </select>
+    
+    <!-- 根据userid查询数据 -->
+    <select id="findGoodsCarByuserid" resultMap="goodsCarMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM GOODS_CAR WHERE 1 = 1
+        <if test="userid != null">
+            AND USERID = #{userid}
+        </if>
+    </select>
+    <!-- 根据userandgoodsid查询数据 -->
+    <select id="findGoodsCarByuserandgoodsid" resultMap="goodsCarMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM GOODS_CAR WHERE 1 = 1
+        <if test="userid != null">
+            AND USERID = #{userid}
+        </if>
+        <if test="goodsid != null">
+            AND GOODSID = #{goodsid}
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findGoodsCarByIds" resultMap="goodsCarMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM GOODS_CAR WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertGoodsCar" parameterType="map">
+        INSERT INTO GOODS_CAR (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            #{addtime},
+            #{userid},
+            #{goodsid},
+            #{quantity}
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateGoodsCar" parameterType="map">
+        UPDATE GOODS_CAR
+        <set>
+            <if test="addtime != null">ADDTIME = #{addtime},</if>
+            <if test="userid != null">USERID = #{userid},</if>
+            <if test="goodsid != null">GOODSID = #{goodsid},</if>
+            <if test="quantity != null">QUANTITY = #{quantity}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteGoodsCar" parameterType="string">
+        DELETE FROM GOODS_CAR WHERE 1 = 1
+        <if test="userid != null">
+            AND USERID = #{userid}
+        </if>
+        <if test="goodsid != null">
+            AND GOODSID = #{goodsid}
+        </if>
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteGoodsCarByIds" parameterType="list">
+        DELETE FROM GOODS_CAR WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

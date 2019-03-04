@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author: bianj
+    Email: edinsker@163.com
+    Version: 5.9.0
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- TBL_ADDRESS -->
+<mapper namespace="com.asjy.YiHome.dao.tblAddressMapper">
+    <!-- 结果映射 -->
+    <resultMap id="tblAddressMap" type="com.asjy.YiHome.model.TblAddress">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="USERID" property="userid" jdbcType="INTEGER" />
+        <result column="PROVINCES" property="provinces" jdbcType="VARCHAR" />
+        <result column="CITY" property="city" jdbcType="VARCHAR" />
+        <result column="COUNTY" property="county" jdbcType="VARCHAR" />
+        <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+        <result column="ZIP" property="zip" jdbcType="VARCHAR" />
+        <result column="DEFAULTSTATUS" property="defaultstatus" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="TEL" property="tel" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        ID, ADDTIME, USERID, PROVINCES, CITY, COUNTY, 
+        ADDRESS, ZIP, DEFAULTSTATUS, NAME, TEL
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findTblAddressAll" resultMap="tblAddressMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM TBL_ADDRESS
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findTblAddressByCondition" resultMap="tblAddressMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM TBL_ADDRESS WHERE 1 = 1
+        <if test="addtime != null">
+            AND ADDTIME = #{addtime}
+        </if>
+        <if test="userid != null">
+            AND USERID = #{userid}
+        </if>
+        <if test="provinces != null and provinces != ''">
+            AND PROVINCES LIKE CONCAT('%',#{provinces},'%')
+        </if>
+        <if test="city != null and city != ''">
+            AND CITY LIKE CONCAT('%',#{city},'%')
+        </if>
+        <if test="county != null and county != ''">
+            AND COUNTY LIKE CONCAT('%',#{county},'%')
+        </if>
+        <if test="address != null and address != ''">
+            AND ADDRESS LIKE CONCAT('%',#{address},'%')
+        </if>
+        <if test="zip != null and zip != ''">
+            AND ZIP LIKE CONCAT('%',#{zip},'%')
+        </if>
+        <if test="defaultstatus != null">
+            AND DEFAULTSTATUS = #{defaultstatus}
+        </if>
+        <if test="name != null and name != ''">
+            AND NAME LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="tel != null">
+            AND TEL = #{tel}
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findTblAddressByIds" resultMap="tblAddressMap" parameterType="int">
+        SELECT
+        <include refid="allColumns" />
+        FROM TBL_ADDRESS WHERE ID =
+            #{id}
+    </select>
+    <!-- 根据用户查询数据 -->
+    <select id="findTblAddressByuserid" resultMap="tblAddressMap" parameterType="int">
+        SELECT
+        <include refid="allColumns" />
+        FROM TBL_ADDRESS WHERE USERID =
+            #{userid}
+        order by defaultstatus desc
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertTblAddress" parameterType="map">
+        INSERT INTO TBL_ADDRESS (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            now(),
+            #{userid},
+            #{provinces},
+            #{city},
+            #{county},
+            #{address},
+            #{zip},
+            #{defaultstatus},
+            #{name},
+            #{tel}
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateTblAddress" parameterType="map">
+        UPDATE TBL_ADDRESS
+        <set>
+            <if test="addtime != null">ADDTIME = #{addtime},</if>
+            <if test="userid != null">USERID = #{userid},</if>
+            <if test="provinces != null">PROVINCES = #{provinces},</if>
+            <if test="city != null">CITY = #{city},</if>
+            <if test="county != null">COUNTY = #{county},</if>
+            <if test="address != null">ADDRESS = #{address},</if>
+            <if test="zip != null">ZIP = #{zip},</if>
+            <if test="defaultstatus != null">DEFAULTSTATUS = #{defaultstatus},</if>
+            <if test="name != null">NAME = #{name},</if>
+            <if test="tel != null">TEL = #{tel}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteTblAddressById" parameterType="string">
+        DELETE FROM TBL_ADDRESS WHERE ID = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteTblAddressByIds" parameterType="list">
+        DELETE FROM TBL_ADDRESS WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

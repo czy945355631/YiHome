@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Welcome to use the TableGo Tools.
+    
+    http://vipbooks.iteye.com
+    http://blog.csdn.net/vipbooks
+    http://www.cnblogs.com/vipbooks
+    
+    Author: bianj
+    Email: edinsker@163.com
+    Version: 5.9.0
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ALL_USER -->
+<mapper namespace="com.asjy.YiHome.dao.AllUserMapper">
+    <!-- 结果映射 -->
+    <resultMap id="allUserMap" type="com.asjy.YiHome.model.AllUser">
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="USER_ADDTIME" property="userAddtime" jdbcType="TIMESTAMP" />
+        <result column="USER_USERNAME" property="userUsername" jdbcType="VARCHAR" />
+        <result column="USER_PASSWD" property="userPasswd" jdbcType="VARCHAR" />
+        <result column="USER_TEL" property="userTel" jdbcType="VARCHAR" />
+        <result column="USER_EMAIL" property="userEmail" jdbcType="VARCHAR" />
+        <result column="USER_REALNAME" property="userRealname" jdbcType="VARCHAR" />
+        <result column="USER_SEX" property="userSex" jdbcType="VARCHAR" />
+        <result column="USER_PERMISSION" property="userPermission" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        ID, USER_ADDTIME, USER_USERNAME, USER_PASSWD, USER_TEL, USER_EMAIL, 
+        USER_REALNAME, USER_SEX, USER_PERMISSION
+    </sql>
+    
+    <!-- 查询所有数据 -->
+    <select id="findAllUserAll" resultMap="allUserMap">
+        SELECT
+        <include refid="allColumns" />
+        FROM ALL_USER
+    </select>
+    
+    <!-- 根据条件查询数据 -->
+    <select id="findAllUserByCondition" resultMap="allUserMap" parameterType="map">
+        SELECT
+        <include refid="allColumns" />
+        FROM ALL_USER WHERE 1 = 1
+        <if test="userAddtime != null">
+            AND USER_ADDTIME = #{userAddtime}
+        </if>
+        <if test="userUsername != null and userUsername != ''">
+            AND USER_USERNAME LIKE CONCAT('%',#{userUsername},'%')
+        </if>
+        <if test="userPasswd != null and userPasswd != ''">
+            AND USER_PASSWD LIKE CONCAT('%',#{userPasswd},'%')
+        </if>
+        <if test="userTel != null and userTel != ''">
+            AND USER_TEL LIKE CONCAT('%',#{userTel},'%')
+        </if>
+        <if test="userEmail != null and userEmail != ''">
+            AND USER_EMAIL LIKE CONCAT('%',#{userEmail},'%')
+        </if>
+        <if test="userRealname != null and userRealname != ''">
+            AND USER_REALNAME LIKE CONCAT('%',#{userRealname},'%')
+        </if>
+        <if test="userSex != null">
+            AND USER_SEX = #{userSex}
+        </if>
+        <if test="userPermission != null">
+            AND USER_PERMISSION = #{userPermission}
+        </if>
+    </select>
+    
+    <!-- 根据主键查询数据 -->
+    <select id="findAllUserByIds" resultMap="allUserMap" parameterType="list">
+        SELECT
+        <include refid="allColumns" />
+        FROM ALL_USER WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 根据主键查询数据 -->
+    <select id="findAllUserById" resultMap="allUserMap" parameterType="int">
+        SELECT
+        <include refid="allColumns" />
+        FROM ALL_USER WHERE ID =
+            #{id}
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertAllUser" parameterType="map">
+        INSERT INTO ALL_USER (<include refid="allColumns" />)
+        VALUES (
+            #{id},
+            #{userAddtime},
+            #{userUsername},
+            #{userPasswd},
+            #{userTel},
+            #{userEmail},
+            #{userRealname},
+            #{userSex},
+            #{userPermission}
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateAllUser" parameterType="map">
+        UPDATE ALL_USER
+        <set>
+            <if test="userAddtime != null">USER_ADDTIME = #{userAddtime},</if>
+            <if test="userUsername != null">USER_USERNAME = #{userUsername},</if>
+            <if test="userPasswd != null">USER_PASSWD = #{userPasswd},</if>
+            <if test="userTel != null">USER_TEL = #{userTel},</if>
+            <if test="userEmail != null">USER_EMAIL = #{userEmail},</if>
+            <if test="userRealname != null">USER_REALNAME = #{userRealname},</if>
+            <if test="userSex != null">USER_SEX = #{userSex},</if>
+            <if test="userPermission != null">USER_PERMISSION = #{userPermission}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    
+    <!-- 根据主键删除数据 -->
+    <delete id="deleteAllUserById" parameterType="string">
+        DELETE FROM ALL_USER WHERE ID = #{id}
+    </delete>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteAllUserByIds" parameterType="list">
+        DELETE FROM ALL_USER WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

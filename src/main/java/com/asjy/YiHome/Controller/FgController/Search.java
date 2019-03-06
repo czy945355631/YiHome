@@ -31,6 +31,7 @@ public class Search {
         model.addAttribute("pageinfo",pageinfo);
         System.out.println(JSON.toJSONString(pageinfo));
 
+
         return "YiHome/shop-4-column";
     }
 }

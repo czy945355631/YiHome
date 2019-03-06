@@ -35,6 +35,12 @@
                     <!--=======  header top dropdowns  =======-->
                     <div class="header-top-dropdown d-flex justify-content-center justify-content-lg-end">
                         <#if Session["loginName"]?exists>
+                            <#if Session["permission"]?exists>
+                                <#if Session["permission"] == 1>
+                                    <a href="/BsPage/goIndex">后台管理</a>
+                                </#if>
+                            </#if>
+                                
                         <div class="account">
                             <#if .now?string["HH"]?eval < 6>
                                 凌晨好

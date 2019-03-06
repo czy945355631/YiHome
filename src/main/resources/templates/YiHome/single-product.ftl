@@ -751,13 +751,15 @@
         var spec1id = $("#index1").attr("specid");
         var spec0_specvid = $("#index0").find(".active").attr("specvid");
         var spec1_specvid = $("#index1").find(".active").attr("specvid");
+
         //读取被选中的规格值/规格的id
+
         $("#index0").find(".inactive").attr("otherspecid",spec1id);
         $("#index0").find(".inactive").attr("otherspecvid",spec1_specvid);
         $("#index1").find(".inactive").attr("otherspecid",spec0id);
         $("#index1").find(".inactive").attr("otherspecvid",spec0_specvid);
         var arr = [];
-        var speclist = $("#spec").find(".inactive")
+        var speclist = $("#spec").find(".inactive");
         //读取未被选择的规格及规格值
         //传到后台判断
 

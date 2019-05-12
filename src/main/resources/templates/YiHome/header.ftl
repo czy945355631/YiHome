@@ -37,7 +37,7 @@
                         <#if Session["loginName"]?exists>
                             <#if Session["permission"]?exists>
                                 <#if Session["permission"] == 1>
-                                    <a href="/BsPage/goIndex">后台管理</a>
+                                    <a href="/BsPage/goIndex">后台管理</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </#if>
                             </#if>
                                 

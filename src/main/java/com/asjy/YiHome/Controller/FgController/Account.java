@@ -208,6 +208,14 @@ public class Account {
         return "ok";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "CheckUsernameAndEmail",method = RequestMethod.POST)
+    public String CheckUsernameAndEmail(String name,String email){
+        System.out.println(name);
+        System.out.println(email);
+        return name;
+    }
+
 
 
 }

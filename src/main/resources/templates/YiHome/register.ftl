@@ -50,7 +50,7 @@
 						<div class="breadcrumb-container">
 							<nav>
 								<ul>
-									<li class="parent-page"><a href="index.html">首页</a></li>
+									<li class="parent-page"><a href="/FgPage/goIndex">首页</a></li>
 									<li>注册</li>
 								</ul>
 							</nav>
@@ -95,7 +95,7 @@
 									<label style="color: red"></label>
 								</div>
 								<div class="col-md-12 mb-20">
-									<input class="mb-0" name="userEmail" type="email" required="required" placeholder="邮箱">
+									<input class="mb-0" id="registerEmail" name="userEmail" type="email" required="required" placeholder="邮箱">
 								</div>
 								<div class="col-md-2 mb-0">
 									<label>密码*</label>
@@ -156,9 +156,26 @@
 			function checkRegisterUsername() {
 				// $.ajax()
             }
+            function checkUsernameAndEmail(name,email) {
+				$.ajax({
+					url:"/Account/CheckUsernameAndEmail",
+					type:"post",
+					data:{name:name,email:email},
+					success:function (data) {
+						if (data == true){
+						    return true;
+						} else {
+						    alert("用户名或Email已存在");
+						    return false;
+						}
+                    }
+				})
+            }
 		
             function checkRegister() {
+
                 var name = $("#registerUsername").val();
+                var email = $("#registerEmail").val();
                 var pwd = $("#registerPasswd").val();
                 var conpwd = $("#confirmPasswd").val();
                 if (name == null) {
@@ -166,7 +183,8 @@
                 }
                 if (pwd == conpwd) {
                     $("#registerPasswd").val($.md5(name+pwd))
-                    return true;
+                    $("#confirmPasswd").val($.md5(name+conpwd));
+					checkUsernameAndEmail(name,email);
                 } else {
                     return false;
                 }

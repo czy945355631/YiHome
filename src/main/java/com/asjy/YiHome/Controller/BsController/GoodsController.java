@@ -45,11 +45,8 @@ public class GoodsController {
 
     @RequestMapping("/getGoodsListJson")
     @ResponseBody
-    /**
-     * @param sEcho 不知道是什么 写着放这里  null
-     * @param extra_search 条件查询
-     * @return
-     */
+
+
     public Object goodsList(HttpServletRequest request) {
         //使用DataTables的属性接收分页数据
         DataTablePageUtil<TblGoods> dataTable = new DataTablePageUtil<TblGoods>(request);
@@ -141,12 +138,14 @@ public class GoodsController {
         int i = goodsService.insertGoods(goods);
         return "redirect:/BsPage/goods/goGoods";
     }
+
     @ResponseBody
     @RequestMapping("/dodelete")
     public String dodelete(String id){
         int i = goodsService.deleteGoods(id);
         return null;
     }
+
     @RequestMapping(value = "/doGoodsUpdate",method= RequestMethod.POST)
     public String doGoodsUpdate(TblGoods goods,HttpServletRequest req) throws Exception{
         MultipartHttpServletRequest mreq = (MultipartHttpServletRequest)req;

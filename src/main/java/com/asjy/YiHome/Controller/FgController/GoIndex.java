@@ -114,7 +114,7 @@ public class GoIndex {
             if (permission == 0){
                 return "redirect:/FgPage/goIndex";
             }else {
-                return "redirect:/BsPage/goIndex";
+                return "redirect:/FgPage/goIndex";
             }
         }else {
             System.out.println("登录失败");
